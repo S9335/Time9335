@@ -1,0 +1,15 @@
+<!-- templates/scheduler/create_task.html -->
+
+{% extends 'scheduler/base.html' %}
+
+{% block content %}
+  <h2>新しいタスク作成</h2>
+  <form method="post" action="{% url 'scheduler:task_create' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">作成する</button>
+  </form>
+
+  <!-- 新しいコード: キャンセルボタンを追加 -->
+  <p><a href="{% url 'scheduler:task_list' %}">キャンセル</a></p>
+{% endblock %}

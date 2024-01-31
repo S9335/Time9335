@@ -1,0 +1,12 @@
+<!-- scheduler/list_list.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>リスト一覧</h2>
+  <ul>
+    {% for list_item in lists %}
+      <li>{{ list_item.name }} - {% if list_item.completed %}完了{% else %}未完了{% endif %}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

@@ -9,7 +9,7 @@
           {{ task.title }} - 優先度: {% if task.priority == 1 %}低{% elif task.priority == 2 %}中{% elif task.priority == 3 %}高{% endif %}
           ({{ task.deadline|date:"Y-m-d H:i" }})
           {% if not task.completed %}
-            [<a href="{% url 'scheduler:complete_task' pk=task.pk %}">完了</a>]
+          [<a href="{% url 'scheduler:task_toggle_status' pk=task.pk %}">完了</a>]
           {% endif %}
           [<a href="{% url 'scheduler:delete_task' pk=task.pk %}">削除</a>]
           [<a href="{% url 'scheduler:update_task' pk=task.pk %}">編集</a>]
@@ -36,10 +36,16 @@
   <!-- タスクの時間の合計と残り時間を表示 -->
   {% if total_time %}
     <p>タスクの時間の合計: {{ total_time }}</p>
-    <p>残り時間: {{ remaining_time }}</p>
+    {% if remaining_time %}
+      <p>残り時間: {{ remaining_time }}</p>
+    {% endif %}
   {% else %}
     <p>タスクの時間の合計: 0:00</p>
   {% endif %}
-{% endblock %}
 
+  <!-- 新しいコード: リスト一覧へのリンクを追加 -->
+  {% if list_list_link %}
+    <p><a href="{{ list_list_link }}">リスト一覧へ</a></p>
+  {% endif %}
+{% endblock %}
 

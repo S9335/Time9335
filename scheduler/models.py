@@ -25,3 +25,10 @@ class Task(models.Model):
             return self.deadline - timezone.now()
         return timezone.timedelta(0)
 
+class List(models.Model):
+    title = models.CharField(max_length=200)
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.title
+

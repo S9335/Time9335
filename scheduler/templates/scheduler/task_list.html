@@ -1,52 +1,29 @@
 {% extends 'scheduler/base.html' %}
 
-{% block title %}Task List{% endblock %}
-
 {% block content %}
-  <h2>タスクリスト</h2>
-
+  <h2>タスク一覧</h2>
   <ul>
     {% if tasks %}
       {% for task in tasks %}
         <li>
-          {{ task.title }} -
-          {% if task.completed %}
-            完了
-          {% else %}
-            未完了
+          {{ task.title }} - 優先度: {% if task.priority == 1 %}低{% elif task.priority == 2 %}中{% elif task.priority == 3 %}高{% endif %}
+          ({{ task.deadline|date:"Y-m-d H:i" }})
+          {% if not task.completed %}
+            [<a href="{% url 'scheduler:task_toggle_status' pk=task.pk %}">完了</a>]
           {% endif %}
-          {% if task.deadline %}
-            (締切: {{ task.deadline|date:"Y年m月d日 H:i" }})
-          {% endif %}
+          [<a href="{% url 'scheduler:update_task' pk=task.pk %}">編集</a>]
+          [<a href="{% url 'scheduler:delete_task' pk=task.pk %}" data-method="post" data-confirm="本当に削除しますか？">削除</a>]
+
+          <!-- 残り時間を表示 -->
           {% if task.remaining_time %}
-            (残り時間: {{ task.remaining_time }})
+            残り時間: {{ task.remaining_time }}
+          {% else %}
+            予定は入れられません
           {% endif %}
-          {% if task.time_until_next_task %}
-            (次のタスクまで: {{ task.time_until_next_task }})
-          {% endif %}
-          - <a href="{% url 'scheduler:update_task' task.pk %}">編集</a>
-          - <a href="{% url 'scheduler:delete_task' task.pk %}">削除</a>
-          - <form method="post" action="{% url 'scheduler:complete_task' task.pk %}" style="display:inline;">
-              {% csrf_token %}
-              <button type="submit">{% if task.completed %}未完了に戻す{% else %}完了にする{% endif %}</button>
-            </form>
         </li>
       {% endfor %}
     {% else %}
-      <li>タスクがありません</li>
+      <li>タスクがありません。</li>
     {% endif %}
   </ul>
-
-  <p style="text-align: left;"><a href="{% url 'scheduler:add_task' %}">新しいタスクを追加</a></p>
-
-  <!-- タスクの時間の合計と残り時間を表示 -->
-  {% if total_time %}
-    <p>タスクの時間の合計: {{ total_time }}</p>
-    {% with remaining_time=remaining_time %}
-      <p>残り時間: {{ remaining_time|time:"H:i" }}</p>
-    {% endwith %}
-  {% else %}
-    <p>タスクの時間の合計: 0:00</p>
-  {% endif %}
 {% endblock %}
-

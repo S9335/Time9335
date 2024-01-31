@@ -1,7 +1,6 @@
 # scheduler/forms.py
-
 from django import forms
-from .models import Task
+from .models import Task, List
 
 class TaskForm(forms.ModelForm):
     PRIORITY_CHOICES = [
@@ -19,3 +18,9 @@ class TaskForm(forms.ModelForm):
         model = Task
         fields = ['title', 'description', 'priority', 'usage_time']
 
+class ListForm(forms.ModelForm):
+    title = forms.CharField(label='タイトル') 
+
+    class Meta:
+        model = List
+        fields = ['title'] 

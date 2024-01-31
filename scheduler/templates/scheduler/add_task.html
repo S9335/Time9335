@@ -1,0 +1,15 @@
+<!-- scheduler/templates/scheduler/add_task.html -->
+
+{% extends 'scheduler/base.html' %}
+
+{% block title %}タスク追加{% endblock %}
+
+{% block content %}
+  <h2>タスク追加</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">追加</button>
+  </form>
+  <a href="{% url 'scheduler:task_list' %}">タスク一覧に戻る</a>
+{% endblock %}

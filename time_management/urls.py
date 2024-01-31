@@ -14,7 +14,6 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-
 from django.contrib import admin
 from django.urls import path, include
 from scheduler.views import CustomLoginView, CustomLogoutView, TimeManagementView, TaskCreateView
@@ -26,5 +25,6 @@ urlpatterns = [
     path('scheduler/time_management/', TimeManagementView.as_view(), name='time_management'),
     path('scheduler/add_task/', TaskCreateView.as_view(), name='add_task'),
     path('scheduler/', include('scheduler.urls', namespace='scheduler')),
-    path('', TimeManagementView.as_view(), name='home'),  # デフォルトのURLパターンを追加
+    path('', TimeManagementView.as_view(), name='home'),  # プロジェクトのルートパスにアクセスした場合のビューを指定
 ]
+

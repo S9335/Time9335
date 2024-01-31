@@ -1,13 +1,11 @@
-<!-- templates/scheduler/base.html -->
+<!-- base.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja"> <!-- 言語を日本語に設定 -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Your Site{% endblock %}</title>
-    <!-- Add your CSS stylesheets or links here -->
-
-    <!-- Bootstrap CSS (example) -->
+  
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
@@ -22,8 +20,17 @@
                     {% if user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'scheduler:logout' %}">ログアウト</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'scheduler:delete_user' %}">アカウント削除</a></li>
+                        {% if list_edit_link %}
+                            <!-- 新しいリンク -->
+                            <li class="nav-item"><a class="nav-link" href="{{ list_edit_link }}">リスト編集</a></li>
+                        {% endif %}
                     {% else %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'scheduler:login' %}">ログイン</a></li>
+                    {% endif %}
+                    
+                    <!-- 新しいコード: リスト一覧ページへのリンク -->
+                    {% if task_list_link %}
+                        <li class="nav-item"><a class="nav-link" href="{{ task_list_link }}">リスト一覧</a></li>
                     {% endif %}
                 </ul>
             </div>
@@ -35,11 +42,11 @@
     </main>
 
     <footer>
-        <!-- Add your footer content here -->
+        <!-- ここにフッターのコンテンツを追加 -->
     </footer>
 
-    <!-- Add your JavaScript scripts or links here -->
-    <!-- Bootstrap JS (example) -->
+    <!-- ここにJavaScriptのスクリプトやリンクを追加 -->
+    <!-- Bootstrap JS（例） -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
