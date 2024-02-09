@@ -1,29 +1,71 @@
+<!-- scheduler/task_list.html -->
 {% extends 'scheduler/base.html' %}
 
-{% block content %}
-  <h2>タスク一覧</h2>
-  <ul>
-    {% if tasks %}
-      {% for task in tasks %}
-        <li>
-          {{ task.title }} - 優先度: {% if task.priority == 1 %}低{% elif task.priority == 2 %}中{% elif task.priority == 3 %}高{% endif %}
-          ({{ task.deadline|date:"Y-m-d H:i" }})
-          {% if not task.completed %}
-            [<a href="{% url 'scheduler:task_toggle_status' pk=task.pk %}">完了</a>]
-          {% endif %}
-          [<a href="{% url 'scheduler:update_task' pk=task.pk %}">編集</a>]
-          [<a href="{% url 'scheduler:delete_task' pk=task.pk %}" data-method="post" data-confirm="本当に削除しますか？">削除</a>]
+{% block title %}タスクリスト{% endblock %}
 
-          <!-- 残り時間を表示 -->
-          {% if task.remaining_time %}
-            残り時間: {{ task.remaining_time }}
-          {% else %}
-            予定は入れられません
-          {% endif %}
-        </li>
-      {% endfor %}
-    {% else %}
-      <li>タスクがありません。</li>
+{% block content %}
+  <h2 style="text-align: center;">タスクリスト</h2>
+
+  <table border="1" style="width: 90%; margin: 0 auto; text-align: center;">
+    <thead>
+      <tr>
+        <th>タスク名</th>
+        <th>完了状況</th>
+        <th>優先度</th>
+        <th>開始時間</th>
+        <th>終了時間</th>
+        <th>次のタスクまで</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if tasks %}
+        {% for task in tasks %}
+          <tr>
+            <td>{{ task.title }}</td>
+            <td>{% if task.completed %}完了{% else %}未完了{% endif %}</td>
+            <td style="font-size: {% if task.priority == '高' %}large{% elif task.priority == '中' %}medium{% else %}small{% endif %};">
+              {{ task.get_priority_display }}
+            </td>
+            <td>{% if task.start_time %}{{ task.start_time|date:"Y年m月d日 H:i" }}{% else %}-{% endif %}</td>
+            <td>{% if task.deadline %}{{ task.deadline|date:"Y年m月d日 H:i" }}{% else %}-{% endif %}</td>
+            <td>{% if task.time_until_next_task %}{{ task.time_until_next_task }}{% endif %}</td>
+            <td>
+              <div style="display: flex; flex-direction: column; align-items: center;">
+                <div style="margin-bottom: 5px;">
+                  <a href="{% url 'scheduler:update_task' task.pk %}">編集</a>
+                </div>
+                <div style="margin-bottom: 5px;">
+                  <a href="{% url 'scheduler:delete_task' task.pk %}">削除</a>
+                </div>
+                <div>
+                  <form method="post" action="{% url 'scheduler:complete_task' task.pk %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">{% if task.completed %}未完了に戻す{% else %}完了にする{% endif %}</button>
+                  </form>
+                </div>
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td colspan="7">タスクがありません</td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
+
+  <p style="text-align: center; margin-bottom: 0;"><a href="{% url 'scheduler:add_task' %}">新しいタスクを追加</a></p>
+
+  <!-- タスクの時間の合計と残り時間を表示 -->
+  {% if total_time %}
+    <p style="text-align: center;">タスクの時間の合計: {{ total_time }}</p>
+    {% if total_remaining_time %}
+      <p style="text-align: center;">残り時間: {{ total_remaining_time }}</p>
     {% endif %}
-  </ul>
+  {% else %}
+    <p style="text-align: center;">タスクの時間の合計: 0:00</p>
+  {% endif %}
 {% endblock %}
+

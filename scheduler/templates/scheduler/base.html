@@ -1,17 +1,21 @@
-<!-- base.html -->
+<!-- templates/scheduler/base.html -->
 <!DOCTYPE html>
-<html lang="ja"> <!-- 言語を日本語に設定 -->
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Your Site{% endblock %}</title>
-  
+    <!-- CSSスタイルシートやリンクをここに追加 -->
+
+    <!-- Bootstrap CSS（例） -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="{% url 'scheduler:signup' %}">サインイン</a>
+            {% if request.path != '/scheduler/login/' %}
+                <a class="navbar-brand" href="{% url 'scheduler:signup' %}">サインアップ</a>
+            {% endif %}
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -19,18 +23,11 @@
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'scheduler:logout' %}">ログアウト</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'scheduler:delete_user' %}">アカウント削除</a></li>
-                        {% if list_edit_link %}
-                            <!-- 新しいリンク -->
-                            <li class="nav-item"><a class="nav-link" href="{{ list_edit_link }}">リスト編集</a></li>
-                        {% endif %}
+                        <!-- <li class="nav-item"><a class="nav-link" href="{% url 'scheduler:delete_user' %}">アカウント削除</a></li> -->
                     {% else %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'scheduler:login' %}">ログイン</a></li>
-                    {% endif %}
-                    
-                    <!-- 新しいコード: リスト一覧ページへのリンク -->
-                    {% if task_list_link %}
-                        <li class="nav-item"><a class="nav-link" href="{{ task_list_link }}">リスト一覧</a></li>
+                        {% if request.path != '/scheduler/login/' %}
+                            <li class="nav-item" style="display: none;"><a class="nav-link" href="{% url 'scheduler:login' %}">ログイン</a></li>
+                        {% endif %}
                     {% endif %}
                 </ul>
             </div>
@@ -42,10 +39,10 @@
     </main>
 
     <footer>
-        <!-- ここにフッターのコンテンツを追加 -->
+        <!-- ここにフッターの内容を追加 -->
     </footer>
 
-    <!-- ここにJavaScriptのスクリプトやリンクを追加 -->
+    <!-- JavaScriptスクリプトやリンクをここに追加 -->
     <!-- Bootstrap JS（例） -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>

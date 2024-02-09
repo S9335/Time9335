@@ -22,12 +22,17 @@
     </div>
 
     <div style="margin-bottom: 10px;">
-      <label for="{{ form.usage_time.id_for_label }}">利用時間:</label>
-      {{ form.usage_time }}
+      <label for="{{ form.start_time.id_for_label }}">開始時間:</label>
+      {{ form.start_time }}
     </div>
+
+    <div style="margin-bottom: 10px;">
+      <label for="{{ form.end_time.id_for_label }}">終了時間:</label>
+      {{ form.end_time }}
+    </div>
+
+    <!-- 利用時間の記載欄を削除 -->
 
     <button type="submit">タスクを追加</button>
   </form>
 {% endblock %}
-
-
