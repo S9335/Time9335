@@ -26,5 +26,5 @@ urlpatterns = [
     path('scheduler/time_management/', TimeManagementView.as_view(), name='time_management'),
     path('scheduler/add_task/', TaskCreateView.as_view(), name='add_task'),
     path('scheduler/', include('scheduler.urls', namespace='scheduler')),
-    path('', TimeManagementView.as_view(), name='home'),  # デフォルトのURLパターンを追加
+    path('', TimeManagementView.as_view(), name='home'), 
 ]
