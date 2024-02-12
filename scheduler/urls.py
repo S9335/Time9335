@@ -17,7 +17,7 @@ from .views import (
 app_name = 'scheduler'
 
 urlpatterns = [
-    path('signup/', SignUpView.as_view(), name='signup'),
+    path('signup/', SignUpView.as_view(), name='signup'),  # サインアップページを最初に配置
     path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/', CustomLogoutView.as_view(), name='logout'),
     path('delete_user/', DeleteUserView.as_view(), name='delete_user'),

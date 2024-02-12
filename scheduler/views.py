@@ -82,7 +82,7 @@ class TaskListView(LoginRequiredMixin, ListView):
 
     @staticmethod
     def format_datetime(datetime_value):
-        return datetime_value.strftime("%Y年%m月%d日 %H:%M") if datetime_value else "-"
+        return datetime_value.strftime("%H:%M") if datetime_value else "-"
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
     model = Task
@@ -115,6 +115,21 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
     form_class = TaskForm
     template_name = 'scheduler/task_form.html'
     success_url = reverse_lazy('scheduler:task_list')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        # 開始時間と終了時間の取得
+        start_time = form.cleaned_data.get('start_time')
+        end_time = form.cleaned_data.get('end_time')
+        if start_time and end_time:
+            form.instance.usage_time = end_time - start_time
+            form.instance.deadline = end_time
+
+        # 親クラスの form_valid メソッドを呼び出し、タスクを更新
+        response = super().form_valid(form)
+
+        # タスクリストのビューにリダイレクト
+        return redirect('scheduler:task_list')
 
 class TaskToggleStatusView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):

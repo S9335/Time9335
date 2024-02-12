@@ -129,4 +129,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # settings.py
 
 LOGIN_REDIRECT_URL = 'scheduler:time_management'
-LOGIN_URL = 'scheduler:login'
+LOGIN_URL = 'scheduler:signup'
