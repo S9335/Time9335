@@ -25,3 +25,8 @@ class Task(models.Model):
         if self.deadline > timezone.now():
             return self.deadline - timezone.now() + self.usage_time
         return self.usage_time
+
+    @property
+    def next_task(self):
+        # Get the next task based on start time
+        return Task.objects.filter(user=self.user, start_time__gt=self.start_time).order_by('start_time').first()

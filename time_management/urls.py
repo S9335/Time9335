@@ -23,7 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('scheduler/login/', CustomLoginView.as_view(), name='login'),
     path('scheduler/logout/', CustomLogoutView.as_view(), name='logout'),
-    path('scheduler/time_management/', TimeManagementView.as_view(), name='time_management'),
+    path('scheduler/home/', TimeManagementView.as_view(), name='home'),
     path('scheduler/add_task/', TaskCreateView.as_view(), name='add_task'),
     path('scheduler/', include('scheduler.urls', namespace='scheduler')),
     path('', TimeManagementView.as_view(), name='home'), 

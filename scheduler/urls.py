@@ -17,11 +17,11 @@ from .views import (
 app_name = 'scheduler'
 
 urlpatterns = [
-    path('signup/', SignUpView.as_view(), name='signup'),  # サインアップページを最初に配置
+    path('signup/', SignUpView.as_view(), name='signup'),
     path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/', CustomLogoutView.as_view(), name='logout'),
     path('delete_user/', DeleteUserView.as_view(), name='delete_user'),
-    path('time_management/', TimeManagementView.as_view(), name='time_management'),
+    path('home/', TimeManagementView.as_view(), name='home'),
     path('task_list/', TaskListView.as_view(), name='task_list'),
     path('add_task/', TaskCreateView.as_view(), name='add_task'),
     path('delete_task/<int:pk>/', TaskDeleteView.as_view(), name='delete_task'),

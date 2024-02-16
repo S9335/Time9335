@@ -1,7 +1,9 @@
 {% extends 'scheduler/base.html' %}
 
 {% block content %}
-  <h2>ログアウト</h2>
-  <p>正常にログアウトしました。</p>
-  <p><a href="{% url 'scheduler:login' %}">ログイン</a>画面に戻る</p>
+  <div style="text-align: center; font-size: 20px;">
+    <h2 style="font-size: 2em;">ログアウト</h2>
+    <p style="font-size: 1.5em;">正常にログアウトしました。</p>
+    <p style="font-size: 1.2em;"><a href="{% url 'scheduler:login' %}">ログイン画面に戻る</a></p>
+  </div>
 {% endblock %}

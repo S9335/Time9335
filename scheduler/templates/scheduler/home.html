@@ -1,0 +1,45 @@
+{% extends 'scheduler/base.html' %}
+
+{% block content %}
+  <style>
+    /* 新しいコード: 重要度のスタイル */
+    .low-priority {
+      font-weight: bold; /* 重要度を太字にする */
+      color: #007bff; /* 重要度が低い場合の色（青色） */
+    }
+
+    .medium-priority {
+      font-weight: bold; /* 重要度を太字にする */
+      color: #ffc107; /* 重要度が中程度の場合の色（黄色） */
+    }
+
+    .high-priority {
+      font-weight: bold; /* 重要度を太字にする */
+      color: #dc3545; /* 重要度が高い場合の色（赤色） */
+    }
+
+    /* 新しいコード: 新しいタスク追加リンクのスタイル */
+    .add-task-link {
+      text-align: right; /* 右寄りにする */
+    }
+  </style>
+
+  <h2 style="text-align: center;">ホーム画面</h2>
+  <ul style="text-align: center; list-style: none; padding: 0;">
+    {% if tasks %}
+      {% for task in tasks %}
+        <li style="text-align: center; margin-bottom: 20px;">
+          <span class="{% if task.priority == 'low' %}low-priority{% elif task.priority == 'medium' %}medium-priority{% elif task.priority == 'high' %}high-priority{% endif %}">
+            タイトル：{{ task.title }}
+            重要度：{{ task.get_priority_display }}
+          </span>
+        </li>
+      {% endfor %}
+    {% else %}
+      <li style="text-align: center; margin-bottom: 20px;">タスクがありません</li>
+    {% endif %}
+  </ul>
+
+  <!-- 新しいコード: 新しいタスク追加リンクを右寄りにする -->
+  <p class="add-task-link"><a href="{% url 'scheduler:add_task' %}">新しいタスクを追加</a></p>
+{% endblock %}

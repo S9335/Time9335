@@ -29,7 +29,15 @@
             </td>
             <td>{% if task.start_time %}{{ task.start_time|date:"Y年m月d日 H:i" }}{% else %}-{% endif %}</td>
             <td>{% if task.deadline %}{{ task.deadline|date:"Y年m月d日 H:i" }}{% else %}-{% endif %}</td>
-            <td>{% if task.time_until_next_task %}{{ task.time_until_next_task }}{% endif %}</td>
+            <td>
+              {% if task.start_time and task.next_task.start_time %}
+                {% with time_until_next_task=task.next_task.start_time|timeuntil:task.deadline %}
+                  {{ time_until_next_task }}
+                {% endwith %}
+              {% else %}
+                -  <!-- No next task or start time -->
+              {% endif %}
+            </td>
             <td>
               <div style="display: flex; flex-direction: column; align-items: center;">
                 <div style="margin-bottom: 5px;">

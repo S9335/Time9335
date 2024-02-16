@@ -3,13 +3,15 @@
 {% block content %}
   <style>
     .btn-short {
-      width: 50%; /* ボタンの幅を半分にする */
+      width: 50%;
     }
   </style>
 
   <div class="container mt-5">
     <div class="row justify-content-center">
       <div class="col-md-6">
+        <h1 class="text-center">タイムマネジメント</h1>
+        <br> <!-- タイトルとログインの間の空白を追加 -->
         <h2 class="text-center">ログイン</h2>
         <form method="post" class="form">
           {% csrf_token %}
@@ -23,11 +25,12 @@
           </div>
           <button type="submit" class="btn btn-primary btn-block btn-short mx-auto">ログイン</button>
         </form>
-        <!-- サインアップのリンクは削除しました -->
+        {% if form.errors %}
+          <p class="text-danger text-center">{{ form.errors }}</p>
+        {% endif %}
+        <br> <!-- ログインボタンとサインアップリンクの間の空白を追加 -->
+        <p class="text-center"><a href="{% url 'scheduler:signup' %}">※アカウントをお持ちでない方はこちらへ※</a></p>
       </div>
     </div>
   </div>
 {% endblock %}
-
-
-
