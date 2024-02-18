@@ -1,4 +1,3 @@
-<!-- templates/registration/signup.html -->
 {% extends 'scheduler/base.html' %}
 
 {% block title %}新規登録{% endblock %}
@@ -8,7 +7,40 @@
     <h2>新規登録</h2>
     <form method="post" class="form">
       {% csrf_token %}
-      {{ form.as_p }}
+      
+      <!-- ユーザーネーム -->
+      {{ form.username.label_tag }}
+      {{ form.username }}
+      {% if form.username.errors %}
+        <div style="color: red;">
+          {{ form.username.errors }}
+        </div>
+      {% endif %}
+      <p style="color: blue;">この項目は必須です。</p>
+
+      <!-- パスワード -->
+      {{ form.password1.label_tag }}
+      {{ form.password1 }}
+      {% if form.password1.errors %}
+        <div style="color: red;">
+          {{ form.password1.errors }}
+        </div>
+      {% endif %}
+      <p style="color: blue;">あなたの他の個人情報と似ているパスワードにはできません。</p>
+      <p style="color: blue;">パスワードは最低 8 文字以上必要です。</p>
+      <p style="color: blue;">よく使われるパスワードにはできません。</p>
+      <p style="color: blue;">数字だけのパスワードにはできません。</p>
+
+      <!-- パスワード再入力 -->
+      {{ form.password2.label_tag }}
+      {{ form.password2 }}
+      {% if form.password2.errors %}
+        <div style="color: red;">
+          {{ form.password2.errors }}
+        </div>
+      {% endif %}
+      <p style="color: blue;">上記で入力したパスワードを再入力してください。</p>
+
       <button type="submit" class="btn btn-primary">登録する</button>
     </form>
     <p>すでにアカウントをお持ちですか？ <a href="{% url 'scheduler:login' %}">ログイン</a></p>

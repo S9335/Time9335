@@ -117,6 +117,7 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
 
         response = super().form_valid(form)
         return redirect('scheduler:task_list')
+    
 
 class TaskDeleteView(LoginRequiredMixin, DeleteView):
     model = Task
