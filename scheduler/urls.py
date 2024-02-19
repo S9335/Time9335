@@ -1,4 +1,4 @@
-# scheduler/urls.py
+# time_management/urls.py
 
 from django.urls import path
 from .views import (
@@ -6,7 +6,6 @@ from .views import (
     CustomLoginView,
     CustomLogoutView,
     DeleteUserView,
-    TimeManagementView,
     TaskListView,
     TaskCreateView,
     TaskDeleteView,
@@ -21,7 +20,6 @@ urlpatterns = [
     path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/', CustomLogoutView.as_view(), name='logout'),
     path('delete_user/', DeleteUserView.as_view(), name='delete_user'),
-    path('home/', TimeManagementView.as_view(), name='home'),
     path('task_list/', TaskListView.as_view(), name='task_list'),
     path('add_task/', TaskCreateView.as_view(), name='add_task'),
     path('delete_task/<int:pk>/', TaskDeleteView.as_view(), name='delete_task'),

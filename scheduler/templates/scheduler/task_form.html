@@ -2,36 +2,35 @@
 {% extends 'scheduler/base.html' %}
 
 {% block content %}
-  <div style="text-align: center;">
-    <h1>タスクを追加</h1>
-    <form method="post" enctype="multipart/form-data" style="display: inline-block; text-align: left;">
+  <h1 style="text-align: center;">タスクを追加</h1>
+  <form method="post" enctype="multipart/form-data" style="text-align: center;">
+    {% csrf_token %}
 
-      <div style="margin-bottom: 10px;">
-        <label for="{{ form.title.id_for_label }}">タイトル:</label>
-        {{ form.title }}
-      </div>
+    <div style="margin-bottom: 10px; text-align: center;">
+      <label for="{{ form.title.id_for_label }}">タイトル:</label>
+      {{ form.title }}
+    </div>
 
-      <div style="margin-bottom: 10px;">
-        <label for="{{ form.description.id_for_label }}">説明:</label>
-        {{ form.description }}
-      </div>
+    <div style="margin-bottom: 10px; text-align: center;">
+      <label for="{{ form.description.id_for_label }}">説明:</label>
+      {{ form.description }}
+    </div>
 
-      <div style="margin-bottom: 10px;">
-        <label for="{{ form.priority.id_for_label }}">優先度:</label>
-        {{ form.priority }}
-      </div>
+    <div style="margin-bottom: 10px; text-align: center;">
+      <label for="{{ form.priority.id_for_label }}">優先度:</label>
+      {{ form.priority }}
+    </div>
 
-      <div style="margin-bottom: 10px;">
-        <label for="{{ form.start_time.id_for_label }}">開始時間:</label>
-        {{ form.start_time }}
-      </div>
+    <div style="margin-bottom: 10px; text-align: center;">
+      <label for="{{ form.start_time.id_for_label }}">開始時間:</label>
+      {{ form.start_time }}
+    </div>
 
-      <div style="margin-bottom: 10px;">
-        <label for="{{ form.end_time.id_for_label }}">終了時間:</label>
-        {{ form.end_time }}
-      </div>
+    <div style="margin-bottom: 10px; text-align: center;">
+      <label for="{{ form.end_time.id_for_label }}">終了時間:</label>
+      {{ form.end_time }}
+    </div>
 
-      <button type="submit" style="margin-left: 240px;">タスクを追加</button>
-    </form>
-  </div>
+    <button type="submit" style="margin-left: 240px;">タスクを追加</button>
+  </form>
 {% endblock %}

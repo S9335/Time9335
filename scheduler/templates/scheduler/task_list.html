@@ -4,6 +4,104 @@
 {% block title %}タスクリスト{% endblock %}
 
 {% block content %}
+  <style>
+    /* 重要度のスタイル */
+    .low-priority {
+      font-weight: bold;
+      color: #007bff;
+      font-size: 12px; /* 低い優先度の文字サイズを設定 */
+      border: 2px solid #007bff; /* 低い優先度の枠の色を設定 */
+
+    }
+
+    .medium-priority {
+      font-weight: bold;
+      color: #ffc107;
+      font-size: 16px; /* 中程度の優先度の文字サイズを設定 */
+      border: 4px solid #ffc107; /* 中程度の優先度の枠の色を設定 */
+    }
+
+    .high-priority {
+      font-weight: bold;
+      color: #dc3545;
+      font-size: 22px; /* 高いの優先度の文字サイズを設定 */
+      border: 6px solid #dc3545; /* 高い優先度の枠の色を設定 */
+    }
+
+    /* 新しいタスク追加リンクのスタイル */
+    .add-task-link {
+      text-align: right;
+    }
+
+    /* 完了したタスクのスタイル */
+    .completed-task {
+      background-color: #eee; /* グレーの背景色を設定 */
+      text-decoration: line-through; /* 完了したタスクに取り消し線を追加 */
+    }
+
+    /* 完了ボタンのスタイル */
+    .complete-button {
+      display: inline-block;
+      padding: 8px 16px;
+      border: 2px solid #000; /* 外枠を黒にする */
+      background: #fff;
+      color: #000;
+      font-size: 16px;
+      font-weight: normal; /* 細字にする */
+      text-decoration: none;
+      border-radius: 100vh;
+      transition: .3s;
+    }
+
+    .complete-button:hover {
+      transform: scale(1.1);
+    }
+
+    /* 編集ボタンのスタイル */
+    .edit-button {
+      display: inline-block;
+      padding: 10px 20px; /* 上下に10px、左右に20pxの余白を指定 */
+      font-size: 15px;
+      color: #fff;
+      text-align: center;
+      border-radius: 5px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 1s;
+      background-color: #5c87a6;
+      border: 1px solid #5c87a6;
+    }
+
+    /* 編集ボタンのホバー時のスタイル */
+    .edit-button:hover {
+      color: #5c87a6;
+      border: 1px solid #5c87a6;
+      background-color: #ffffff;
+    }
+
+    /* 削除ボタンのスタイル */
+    .delete-button {
+      display: inline-block;
+      padding: 10px 20px; /* 上下に10px、左右に20pxの余白を指定 */
+      font-size: 15px;
+      color: #fff;
+      text-align: center;
+      border-radius: 5px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 1s;
+      background-color: #fd6158;
+      border: 1px solid #fd6158;
+    }
+
+    /* 削除ボタンのホバー時のスタイル */
+    .delete-button:hover {
+      color: #fd6158;
+      border: 1px solid #fd6158;
+      background-color: #ffffff;
+    }
+  </style>
+
   <h2 style="text-align: center;">タスクリスト</h2>
 
   <table border="1" style="width: 90%; margin: 0 auto; text-align: center;">
@@ -21,10 +119,10 @@
     <tbody>
       {% if tasks %}
         {% for task in tasks %}
-          <tr>
+          <tr class="{% if task.completed %}completed-task{% endif %}">
             <td>{{ task.title }}</td>
             <td>{% if task.completed %}完了{% else %}未完了{% endif %}</td>
-            <td style="font-size: {% if task.priority == '高' %}large{% elif task.priority == '中' %}medium{% else %}small{% endif %};">
+            <td class="{% if task.priority == 'low' %}low-priority{% elif task.priority == 'medium' %}medium-priority{% elif task.priority == 'high' %}high-priority{% endif %}">
               {{ task.get_priority_display }}
             </td>
             <td>{% if task.start_time %}{{ task.start_time|date:"Y年m月d日 H:i" }}{% else %}-{% endif %}</td>
@@ -35,21 +133,21 @@
                   {{ time_until_next_task }}
                 {% endwith %}
               {% else %}
-                -  <!-- No next task or start time -->
+                -
               {% endif %}
             </td>
             <td>
               <div style="display: flex; flex-direction: column; align-items: center;">
                 <div style="margin-bottom: 5px;">
-                  <a href="{% url 'scheduler:update_task' task.pk %}">編集</a>
+                  <a href="{% url 'scheduler:update_task' task.pk %}" class="edit-button">編集</a>
                 </div>
                 <div style="margin-bottom: 5px;">
-                  <a href="{% url 'scheduler:delete_task' task.pk %}">削除</a>
+                  <a href="{% url 'scheduler:delete_task' task.pk %}" class="delete-button">削除</a>
                 </div>
                 <div>
                   <form method="post" action="{% url 'scheduler:complete_task' task.pk %}" style="display:inline;">
                     {% csrf_token %}
-                    <button type="submit">{% if task.completed %}未完了に戻す{% else %}完了にする{% endif %}</button>
+                    <button type="submit" class="complete-button">{% if task.completed %}未完了{% else %}完了{% endif %}</button>
                   </form>
                 </div>
               </div>
@@ -64,5 +162,6 @@
     </tbody>
   </table>
 
-  <p style="text-align: center; margin-bottom: 0;"><a href="{% url 'scheduler:add_task' %}">新しいタスクを追加</a></p>
+  <!-- 新しいタスク追加リンク -->
+  <p class="add-task-link"><a href="{% url 'scheduler:add_task' %}">新しいタスクを追加</a></p>
 {% endblock %}

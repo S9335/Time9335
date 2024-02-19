@@ -1,13 +1,11 @@
+# scheduler/views.py
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic import CreateView, TemplateView, View, UpdateView, ListView, DeleteView
 from django.urls import reverse_lazy
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import timedelta
-from django.contrib import messages
-from django.utils import timezone
-
 from .models import Task
 from .forms import TaskForm
 
@@ -18,10 +16,6 @@ class SignUpView(CreateView):
 
 class CustomLoginView(LoginView):
     template_name = 'registration/login.html'
-
-    def form_invalid(self, form):
-        messages.error(self.request, 'ユーザー名またはパスワードが正しくありません。')
-        return super().form_invalid(form)
 
 class CustomLogoutView(LogoutView):
     template_name = 'registration/logout.html'
@@ -36,9 +30,7 @@ class TaskListView(LoginRequiredMixin, ListView):
     context_object_name = 'tasks'
 
     def get_queryset(self):
-        tasks = super().get_queryset()
-
-        tasks = tasks.order_by('start_time')
+        tasks = Task.objects.filter(user=self.request.user).order_by('start_time')
 
         for i in range(len(tasks)):
             task = tasks[i]
@@ -46,7 +38,7 @@ class TaskListView(LoginRequiredMixin, ListView):
 
             if i < len(tasks) - 1:
                 next_task_start_time = tasks[i + 1].start_time
-                time_until_next_task = next_task_start_time - task.deadline
+                time_until_next_task = next_task_start_time - task.start_time
                 task.time_until_next_task = TaskListView.format_timedelta(time_until_next_task)
             else:
                 task.time_until_next_task = None
@@ -76,30 +68,6 @@ class TaskListView(LoginRequiredMixin, ListView):
     def format_datetime(datetime_value):
         return datetime_value.strftime("%H:%M") if datetime_value else "-"
 
-class TimeManagementView(LoginRequiredMixin, TemplateView):
-    template_name = 'scheduler/home.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        tasks = Task.objects.filter(user=self.request.user).order_by('start_time')
-        
-        total_time = TimeManagementView.calculate_total_time(tasks)
-        
-        context['tasks'] = tasks
-        context['total_time'] = total_time
-        return context
-
-    @staticmethod
-    def calculate_total_time(tasks):
-        total_time = timedelta()
-
-        for task in tasks:
-            if task.usage_time:
-                total_time += task.usage_time
-
-        total_time_formatted = TaskListView.format_timedelta(total_time)
-        return total_time_formatted
-
 class TaskCreateView(LoginRequiredMixin, CreateView):
     model = Task
     form_class = TaskForm
@@ -108,7 +76,6 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-
         start_time = form.cleaned_data.get('start_time')
         end_time = form.cleaned_data.get('end_time')
         if start_time and end_time:
@@ -116,8 +83,8 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
             form.instance.deadline = end_time
 
         response = super().form_valid(form)
+
         return redirect('scheduler:task_list')
-    
 
 class TaskDeleteView(LoginRequiredMixin, DeleteView):
     model = Task
@@ -132,7 +99,6 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-
         start_time = form.cleaned_data.get('start_time')
         end_time = form.cleaned_data.get('end_time')
         if start_time and end_time:
@@ -140,6 +106,7 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
             form.instance.deadline = end_time
 
         response = super().form_valid(form)
+
         return redirect('scheduler:task_list')
 
 class TaskToggleStatusView(LoginRequiredMixin, View):
