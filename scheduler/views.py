@@ -82,8 +82,10 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
             form.instance.usage_time = end_time - start_time
             form.instance.deadline = end_time
 
+        # Save the form and get the response
         response = super().form_valid(form)
 
+        # Redirect to the task list
         return redirect('scheduler:task_list')
 
 class TaskDeleteView(LoginRequiredMixin, DeleteView):
@@ -105,8 +107,10 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
             form.instance.usage_time = end_time - start_time
             form.instance.deadline = end_time
 
+        # Save the form and get the response
         response = super().form_valid(form)
 
+        # Redirect to the task list
         return redirect('scheduler:task_list')
 
 class TaskToggleStatusView(LoginRequiredMixin, View):
@@ -115,3 +119,4 @@ class TaskToggleStatusView(LoginRequiredMixin, View):
         task.completed = not task.completed
         task.save()
         return redirect('scheduler:task_list')
+

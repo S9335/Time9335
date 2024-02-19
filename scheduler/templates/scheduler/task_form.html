@@ -2,6 +2,54 @@
 {% extends 'scheduler/base.html' %}
 
 {% block content %}
+  <style>
+    /* 新しいタスク追加ボタンのスタイル */
+    .add-task-button {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 15px;
+      color: #fff;
+      text-align: center;
+      border-radius: 5px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 1s;
+      background-color: #28a745; /* 緑色に変更 */
+      border: 1px solid #28a745; /* 枠線の色も変更可能 */
+      margin-left: 10px; /* 10px左に移動 */
+    }
+
+    /* 新しいタスク追加ボタンのホバー時のスタイル */
+    .add-task-button:hover {
+      color: #007bff;
+      border: 1px solid #007bff;
+      background-color: #ffffff;
+    }
+
+    /* キャンセルボタンのスタイル */
+    .cancel-button {
+      display: inline-block;
+      padding: 10px 20px; /* 上下に10px、左右に20pxの余白を指定 */
+      font-size: 15px;
+      color: #fff;
+      text-align: center;
+      border-radius: 5px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 1s;
+      background-color: #5c87a6;
+      border: 1px solid #5c87a6;
+      margin-left: 10px; /* タスクを追加ボタンからの左の余白 */
+    }
+
+    /* キャンセルボタンのホバー時のスタイル */
+    .cancel-button:hover {
+      color: #5c87a6;
+      border: 1px solid #5c87a6;
+      background-color: #ffffff;
+    }
+  </style>
+
   <h1 style="text-align: center;">タスクを追加</h1>
   <form method="post" enctype="multipart/form-data" style="text-align: center;">
     {% csrf_token %}
@@ -31,6 +79,7 @@
       {{ form.end_time }}
     </div>
 
-    <button type="submit" style="margin-left: 240px;">タスクを追加</button>
+    <button type="submit" class="add-task-button">タスクを追加</button>
+    <a href="#" class="cancel-button">キャンセル</a>
   </form>
 {% endblock %}

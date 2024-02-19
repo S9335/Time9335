@@ -3,12 +3,63 @@
 {% extends 'scheduler/base.html' %}
 
 {% block content %}
+  <style>
+    /* キャンセルボタンのスタイル */
+    .edit-button {
+      display: inline-block;
+      padding: 10px 20px; /* 上下に10px、左右に20pxの余白を指定 */
+      font-size: 15px;
+      color: #fff;
+      text-align: center;
+      border-radius: 5px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 1s;
+      background-color: #5c87a6;
+      border: 1px solid #5c87a6;
+      margin-left: 20px; /* 追加：削除ボタンからの左の余白 */
+    }
+
+    /* キャンセルボタンのホバー時のスタイル */
+    .edit-button:hover {
+      color: #5c87a6;
+      border: 1px solid #5c87a6;
+      background-color: #ffffff;
+    }
+
+    /* 削除ボタンのスタイル */
+    .delete-button {
+      display: inline-block;
+      padding: 10px 20px; /* 上下に10px、左右に20pxの余白を指定 */
+      font-size: 15px;
+      color: #fff;
+      text-align: center;
+      border-radius: 5px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 1s;
+      background-color: #fd6158;
+      border: 1px solid #fd6158;
+      margin-right: 20px; /* 追加：キャンセルボタンからの右の余白 */
+    }
+
+    /* 削除ボタンのホバー時のスタイル */
+    .delete-button:hover {
+      color: #fd6158;
+      border: 1px solid #fd6158;
+      background-color: #ffffff;
+    }
+  </style>
+
   <div style="text-align: center;">
     <h2>タスク削除</h2>
-    <p>本当にこのタスクを削除しますか？この操作は取り消せません。</p>
+    <p>本当にこのタスクを削除しますか？</p>
     <form method="post" action="{% url 'scheduler:delete_task' pk=object.pk %}">
       {% csrf_token %}
-      <button type="submit">削除する</button>
+      <div style="margin: 0 auto; width: fit-content;">
+        <button type="submit" class="delete-button">削除する</button>
+        <a href="{% url 'scheduler:task_list' %}" class="edit-button">キャンセル</a>
+      </div>
     </form>
   </div>
 {% endblock %}

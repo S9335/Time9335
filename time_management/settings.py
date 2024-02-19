@@ -128,5 +128,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # settings.py
 
-LOGIN_REDIRECT_URL = 'scheduler:home'
+LOGIN_REDIRECT_URL = 'scheduler:task_list'
 LOGIN_URL = 'scheduler:login'
